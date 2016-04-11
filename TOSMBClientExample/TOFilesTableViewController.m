@@ -10,14 +10,18 @@
 #import "TOSMBClient.h"
 #import "TORootViewController.h"
 
-@interface TOFilesTableViewController ()
+#import "SMBImageCache.h"
+
+@interface TOFilesTableViewController () <SKAsyncCacheDelegate>
 
 @property (nonatomic, copy) NSString *directoryTitle;
 @property (nonatomic, strong) TOSMBSession *session;
 
 @end
 
-@implementation TOFilesTableViewController
+@implementation TOFilesTableViewController {
+    SMBImageCache *cache;
+}
 
 - (instancetype)initWithSession:(TOSMBSession *)session title:(NSString *)title
 {
@@ -32,7 +36,21 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    cache = [SMBImageCache sharedCache];
+    
     self.navigationItem.title = @"Loading...";
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    cache.delegate = self;
+    cache.suspended = NO;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    cache.suspended = YES;
+    cache.delegate = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -55,9 +73,21 @@
     }
     
     TOSMBSessionFile *file = self.files[indexPath.row];
+    [cell.imageView setImage:nil];
     cell.textLabel.text = file.name;
     cell.detailTextLabel.text = file.directory ? @"Directory" : [NSString stringWithFormat:@"File | Size: %ld", (long)file.fileSize];
     cell.accessoryType = file.directory ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+    
+    if(!file.directory && [file.name hasSuffix:@".JPG"]) {
+        NSArray *key = @[_session, file.filePath];
+        
+        UIImage *image = [cache objectForKey:key];
+        if(image) {
+            [cell.imageView setImage:image];
+        } else {
+            [cache cacheObjectForKey:key];
+        }
+    }
     
     return cell;
 }
@@ -90,6 +120,18 @@
     _files = files;
     self.navigationItem.title = self.directoryTitle;
     [self.tableView reloadData];
+}
+
+#pragma mark - SKAsyncCacheDelegate
+
+- (void)asyncCache:(SKAsyncCache *)cache didCacheObject:(id)object forKey:(id<NSCopying>)key {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+}
+
+- (void)asyncCache:(SKAsyncCache *)cache failedToCacheObjectForKey:(id<NSCopying>)key withError:(NSError *)error {
+    NSLog(@"failedToCacheObjectForKey:%@ withError:%@", key, error);
 }
          
 @end

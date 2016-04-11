@@ -1,0 +1,3 @@
+github "skchen/SKUtils" "v0.4.4"
+github "skchen/SKTaskUtils" "v0.1.8"
+github "skchen/SKImageCache" "v0.1.7"

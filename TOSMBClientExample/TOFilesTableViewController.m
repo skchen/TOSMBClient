@@ -78,7 +78,7 @@
     cell.detailTextLabel.text = file.directory ? @"Directory" : [NSString stringWithFormat:@"File | Size: %ld", (long)file.fileSize];
     cell.accessoryType = file.directory ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     
-    if(!file.directory && [file.name hasSuffix:@".JPG"]) {
+    if([self isImage:file]) {
         NSArray *key = @[_session, file.filePath];
         
         UIImage *image = [cache objectForKey:key];
@@ -122,6 +122,19 @@
     [self.tableView reloadData];
 }
 
+#pragma mark - Image
+
+- (BOOL)isImage:(TOSMBSessionFile *)file {
+    if(!file.directory) {
+        if([file.name hasSuffix:@".JPG"]) return YES;
+        if([file.name hasSuffix:@".jpg"]) return YES;
+        if([file.name hasSuffix:@".PNG"]) return YES;
+        if([file.name hasSuffix:@".png"]) return YES;
+    }
+    
+    return NO;
+}
+
 #pragma mark - SKAsyncCacheDelegate
 
 - (void)asyncCache:(SKAsyncCache *)cache didCacheObject:(id)object forKey:(id<NSCopying>)key {
@@ -133,5 +146,7 @@
 - (void)asyncCache:(SKAsyncCache *)cache failedToCacheObjectForKey:(id<NSCopying>)key withError:(NSError *)error {
     NSLog(@"failedToCacheObjectForKey:%@ withError:%@", key, error);
 }
+
+
          
 @end

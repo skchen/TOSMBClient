@@ -16,8 +16,7 @@
 
 @implementation SMBImageCache {
     SKTaskQueue *fileDownloadQueue;
-    SKAsyncFileCache *fileCache;
-    SKAsyncImageCache *imageCache;
+    SKFileCache *fileCache;
     
     TOSMBSessionDownloadTask *downloadTask;
     SuccessBlock downloadSuccessBlock;
@@ -34,9 +33,12 @@
 }
 
 - (nonnull instancetype)init {
-    fileDownloadQueue = [[SKTaskQueue alloc] initWithOrderedDictionary:nil andConstraint:10 andQueue:nil];
-    fileCache = [[SKAsyncFileCache alloc] initWithConstraint:10 andCoster:nil andLoader:self andTaskQueue:fileDownloadQueue];
-    return [self initWithFileCache:fileCache andConstraint:100 andCoster:nil andLoader:nil andTaskQueue:nil];
+    fileDownloadQueue = [[SKTaskQueue alloc] initWithOrderedDictionary:nil andConstraint:20 andQueue:nil];
+    
+    NSString *cachePath = [self tempPathForCache];
+    
+    fileCache = [[SKFileCache alloc] initWithPath:cachePath andConstraint:100 andCoster:nil andLoader:self andTaskQueue:fileDownloadQueue];
+    return [self initWithFileCache:fileCache andConstraint:50 andCoster:nil andLoader:nil andTaskQueue:nil];
 }
 
 #pragma mark - SKAsyncCacheLoader
@@ -68,8 +70,14 @@
 
 #pragma mark - Misc
 
+- (NSString *)tempPathForCache {
+    NSArray *cacheDirectorys = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *cacheDirectory = [cacheDirectorys objectAtIndex:0];
+    return [cacheDirectory stringByAppendingPathComponent:@"fileCache.plist"];
+}
+
 - (NSString *)tempPathForSession:(TOSMBSession *)session andPath:(NSString *)path {
-    NSArray *cacheDirectorys = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSArray *cacheDirectorys = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cacheDirectory = [cacheDirectorys objectAtIndex:0];
     NSString *fileName = [NSString stringWithFormat:@"%@_%@", session.hostName, [[path stringByReplacingOccurrencesOfString:@"/" withString:@"-"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     return [cacheDirectory stringByAppendingPathComponent:fileName];

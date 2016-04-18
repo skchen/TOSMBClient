@@ -467,4 +467,38 @@
     return smb_session_state(self.session);
 }
 
+#pragma mark - NSCoding
+
+- (nullable instancetype)initWithCoder:(nonnull NSCoder *)aDecoder {
+    self = [super init];
+    
+    _hostName = [aDecoder decodeObjectForKey:@"hostName"];
+    _ipAddress = [aDecoder decodeObjectForKey:@"ipAddress"];
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:_hostName forKey:@"hostName"];
+    [aCoder encodeObject:_ipAddress forKey:@"ipAddress"];
+}
+
+- (BOOL)isEqual:(id)object {
+    if([object isKindOfClass:[TOSMBSession class]]) {
+        TOSMBSession *rhs = (TOSMBSession *)object;
+        
+        if(![_hostName isEqualToString:rhs.hostName]) {
+            return NO;
+        }
+        
+        if(![_ipAddress isEqualToString:rhs.ipAddress]) {
+            return NO;
+        }
+        
+        return YES;
+    }
+    
+    return [super isEqual:object];
+}
+
 @end

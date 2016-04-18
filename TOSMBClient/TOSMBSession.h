@@ -26,7 +26,7 @@
 @class TOSMBSessionDownloadTask;
 @protocol TOSMBSessionDownloadTaskDelegate;
 
-@interface TOSMBSession : NSObject
+@interface TOSMBSession : NSObject <NSCoding>
 
 @property (nonatomic, copy) NSString *hostName;
 @property (nonatomic, copy) NSString *ipAddress;

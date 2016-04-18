@@ -8,7 +8,7 @@
 
 @import SKImageCache;
 
-@interface SMBImageCache : SKAsyncImageCache
+@interface SMBImageCache : SKImageCache
 
 + (nonnull instancetype)sharedCache;
 

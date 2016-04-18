@@ -55,8 +55,8 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    cache.constraint = cache.cost-1;
-    NSLog(@"Constraint change to: %@", @(cache.constraint));
+    [cache removeLastObject];
+    cache.constraint = cache.cost;
 }
 
 #pragma mark - Table view data source

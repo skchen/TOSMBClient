@@ -26,7 +26,6 @@
 		22AE8B881B6F66E4008412CF /* TOSMBSessionDownloadTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 22AE8B871B6F66E4008412CF /* TOSMBSessionDownloadTask.m */; };
 		22CB5AEB1B78929B006F05F2 /* TORootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CB5AEA1B78929B006F05F2 /* TORootViewController.m */; };
 		822586B91CBB903100E01E7D /* SKImageCache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 822586B61CBB903100E01E7D /* SKImageCache.framework */; };
-		822586BA1CBB903100E01E7D /* SKTaskUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 822586B71CBB903100E01E7D /* SKTaskUtils.framework */; };
 		822586BB1CBB903100E01E7D /* SKUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 822586B81CBB903100E01E7D /* SKUtils.framework */; };
 		822586C31CBBA0C700E01E7D /* SMBImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 822586C21CBBA0C700E01E7D /* SMBImageCache.m */; };
 /* End PBXBuildFile section */
@@ -86,7 +85,6 @@
 		22CB5AE91B78929B006F05F2 /* TORootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TORootViewController.h; sourceTree = "<group>"; };
 		22CB5AEA1B78929B006F05F2 /* TORootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TORootViewController.m; sourceTree = "<group>"; };
 		822586B61CBB903100E01E7D /* SKImageCache.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SKImageCache.framework; path = ../Carthage/Build/iOS/SKImageCache.framework; sourceTree = "<group>"; };
-		822586B71CBB903100E01E7D /* SKTaskUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SKTaskUtils.framework; path = ../Carthage/Build/iOS/SKTaskUtils.framework; sourceTree = "<group>"; };
 		822586B81CBB903100E01E7D /* SKUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SKUtils.framework; path = ../Carthage/Build/iOS/SKUtils.framework; sourceTree = "<group>"; };
 		822586C11CBBA0C700E01E7D /* SMBImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMBImageCache.h; sourceTree = "<group>"; };
 		822586C21CBBA0C700E01E7D /* SMBImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMBImageCache.m; sourceTree = "<group>"; };
@@ -98,7 +96,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				822586B91CBB903100E01E7D /* SKImageCache.framework in Frameworks */,
-				822586BA1CBB903100E01E7D /* SKTaskUtils.framework in Frameworks */,
 				822586BB1CBB903100E01E7D /* SKUtils.framework in Frameworks */,
 				22236CFC1B687DB100176C34 /* libiconv.dylib in Frameworks */,
 				22236CFE1B687E1300176C34 /* libtasn1.a in Frameworks */,
@@ -139,7 +136,6 @@
 			isa = PBXGroup;
 			children = (
 				822586B61CBB903100E01E7D /* SKImageCache.framework */,
-				822586B71CBB903100E01E7D /* SKTaskUtils.framework */,
 				822586B81CBB903100E01E7D /* SKUtils.framework */,
 				2214DCC31B661CD2003E3EF1 /* TOAppDelegate.h */,
 				2214DCC41B661CD2003E3EF1 /* TOAppDelegate.m */,
@@ -338,7 +334,6 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/SKUtils.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/SKTaskUtils.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SKImageCache.framework",
 			);
 			outputPaths = (

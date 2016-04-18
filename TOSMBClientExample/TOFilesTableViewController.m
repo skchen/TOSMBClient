@@ -55,7 +55,8 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    cache.constraint = cache.cost-1;
+    NSLog(@"Constraint change to: %@", @(cache.constraint));
 }
 
 #pragma mark - Table view data source

@@ -10,13 +10,14 @@
 
 #import "TOSMBClient.h"
 
-@interface SMBImageCache () <SKAsyncCacheLoader, TOSMBSessionDownloadTaskDelegate>
+@interface SMBImageCache () <SKAsyncCacheLoader, SKLruCoster, TOSMBSessionDownloadTaskDelegate>
 
 @end
 
 @implementation SMBImageCache {
     SKTaskQueue *fileDownloadQueue;
     SKFileCache *fileCache;
+    SKImageCacheDecoder *imageDecoder;
     
     TOSMBSessionDownloadTask *downloadTask;
     SuccessBlock downloadSuccessBlock;
@@ -38,7 +39,10 @@
     NSString *cachePath = [self tempPathForCache];
     
     fileCache = [[SKFileCache alloc] initWithPath:cachePath andConstraint:100 andCoster:nil andLoader:self andTaskQueue:fileDownloadQueue];
-    return [self initWithFileCache:fileCache andConstraint:50 andCoster:nil andLoader:nil andTaskQueue:nil];
+    
+    imageDecoder = [[SKImageCacheDecoder alloc] initWithFileCache:fileCache andSize:CGSizeMake(1024, 1024)];
+    
+    return [self initWithFileCache:fileCache andConstraint:1920*1080*16 andCoster:self andLoader:imageDecoder andTaskQueue:nil];
 }
 
 #pragma mark - SKAsyncCacheLoader
@@ -66,6 +70,15 @@
 
 - (void)downloadTask:(TOSMBSessionDownloadTask *)downloadTask didCompleteWithError:(NSError *)error {
     downloadFailureBlock(error);
+}
+
+#pragma mark - SKLruCoster
+
+- (NSUInteger)costForObject:(id)object {
+    UIImage *image = (UIImage *)object;
+    NSUInteger cost = image.size.width*image.size.height;
+    NSLog(@"Cost: %@", @(cost));
+    return cost;
 }
 
 #pragma mark - Misc
